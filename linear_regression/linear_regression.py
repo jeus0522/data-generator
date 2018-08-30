@@ -1,3 +1,4 @@
+import argparse
 import csv
 from pathlib import Path
 
@@ -149,10 +150,41 @@ def generate_linear_data(data_size: int=20, mu: float=0, sigma: float=1.0,
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Create data points that are randomly deviated from "
+                                                 "a linear function.")
 
-    generate_linear_data(data_size=10, x_limits=(1, 10), sigma=1,
-                         deviations_histogram=True, plot_line=True,
-                         seed=19680801)
+    parser.add_argument("--data_size", type=int, default=10,
+                        help="The number of data points to generate. Defaults to 10.")
+    parser.add_argument("--x_limits", type=float, nargs=2, default=[1, 10],
+                        help="The range of the x values for the generated data points. "
+                             "Defaults to '1 10' (range [1, 10]).")
+    parser.add_argument("--weight", type=float, default=None,
+                        help="The 'w' parameter of the linear function. Defaults to random in [0, 1).")
+    parser.add_argument("--bias", type=float, default=None,
+                        help="The 'b' parameter of the linear function. Defaults to random in [-1, 1).")
+    parser.add_argument("--mu", type=float, default=0.,
+                        help="The mean of the normal distribution from where the deviations are generated.")
+    parser.add_argument("--sigma", type=float, default=1.0,
+                        help="The standard deviation of the normal distribution from where the "
+                             "deviations are generated.")
+    parser.add_argument("--deviations_histogram", default=False, action="store_true",
+                        help="Activate to plot the deviations histogram.")
+    parser.add_argument("--plot_line", default=False, action="store_true",
+                        help="Activate to plot the linear function with the data points.")
+    parser.add_argument("--seed", type=int, default=None,
+                        help="The Numpy seed to use on the random numbers generation.")
+    parser.add_argument("--output", type=str, default=None,
+                        help="Where to save the generated data file. Defaults to this script folder.")
+    args = parser.parse_args()
+
+    # Check output folder
+
+    generate_linear_data(data_size=args.data_size, x_limits=args.x_limits,
+                         sigma=args.sigma, mu=args.mu,
+                         weight=args.weight, bias=args.bias,
+                         deviations_histogram=args.deviations_histogram,
+                         plot_line=args.plot_line,
+                         seed=args.seed, output=args.output)
 
 
 if __name__ == '__main__':

@@ -31,8 +31,8 @@ class BaseDataclass:
 
 @dataclass
 class LinearRegressionConfig(BaseDataclass):
-    weight: float = np.random.uniform(low=0, high=1)
-    bias: float = np.random.uniform(low=-1, high=1)
+    weight: float = round(np.random.uniform(low=0, high=1), 4)
+    bias: float = round(np.random.uniform(low=-1, high=1), 4)
 
     def __post_init__(self):
         # Loop through the fields

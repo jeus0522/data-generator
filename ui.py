@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter import ttk
 from typing import Tuple
 
+import numpy as np
+
 from config_utils import DataConfig, LinearRegressionConfig, OutputConfig
 from linear_regression import generate_linear_data
 
@@ -31,11 +33,17 @@ class JobFrame:
         self.weight_input = ttk.Entry(self.frame)
         self.weight_input.insert(0, job_config.weight)
         self.weight_input.grid(column=1, row=1)
+        ttk.Button(self.frame, text="Random",
+                   command=lambda: self.random_weight()) \
+            .grid(column=2, row=1)
 
         ttk.Label(self.frame, text="Bias:").grid(column=0, row=2)
         self.bias_input = ttk.Entry(self.frame)
         self.bias_input.insert(0, job_config.bias)
         self.bias_input.grid(column=1, row=2)
+        ttk.Button(self.frame, text="Random",
+                   command=lambda: self.random_bias()) \
+            .grid(column=2, row=2)
 
     @property
     def weight(self) -> float:
@@ -44,6 +52,14 @@ class JobFrame:
     @property
     def bias(self) -> float:
         return float(self.bias_input.get())
+
+    def random_weight(self):
+        self.weight_input.delete(0, END)
+        self.weight_input.insert(0, round(np.random.uniform(low=0, high=1), 4))
+
+    def random_bias(self):
+        self.bias_input.delete(0, END)
+        self.bias_input.insert(0, round(np.random.uniform(low=-1, high=1), 4))
 
     def get_job_config(self) -> LinearRegressionConfig:
         return LinearRegressionConfig(weight=self.weight, bias=self.bias)
@@ -111,11 +127,11 @@ class DataFrame:
                           x_limits=self.x_limits, seed=self.seed)
 
 
-def generate_data(job_config: LinearRegressionConfig, data_config: DataConfig):
+def generate_data(job_frame: JobFrame, data_frame: DataFrame):
     output_dir = Path(Path(__file__).parent, "generated_data")
     output_config = OutputConfig(output_dir=output_dir, plot_line=True, deviations_histogram=True)
 
-    generate_linear_data(job_config, data_config, output_config)
+    generate_linear_data(job_frame.get_job_config(), data_frame.get_data_config(), output_config)
 
 
 def main():
@@ -126,8 +142,7 @@ def main():
     job_frame = JobFrame(frm)
     data_frame = DataFrame(frm)
     ttk.Button(frm, text="Generate",
-               command=lambda job_config=job_frame.get_job_config(), data_config=data_frame.get_data_config():
-               generate_data(job_config, data_config)) \
+               command=lambda: generate_data(job_frame, data_frame)) \
         .grid(column=0, row=5)
     root.mainloop()
 

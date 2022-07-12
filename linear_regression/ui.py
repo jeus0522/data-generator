@@ -6,10 +6,7 @@ from typing import Tuple
 import numpy as np
 
 from config_utils import DataConfig, LinearRegressionConfig, OutputConfig
-from linear_regression import generate_linear_data
-
-
-# job_types = ["linear_regression"]
+from linear_regression import linear_data_job
 
 
 class JobFrame:
@@ -128,10 +125,10 @@ class DataFrame:
 
 
 def generate_data(job_frame: JobFrame, data_frame: DataFrame):
-    output_dir = Path(Path(__file__).parent, "generated_data")
+    output_dir = Path(Path(__file__).parent, "../generated_data")
     output_config = OutputConfig(output_dir=output_dir, plot_line=True, deviations_histogram=True)
 
-    generate_linear_data(job_frame.get_job_config(), data_frame.get_data_config(), output_config)
+    linear_data_job(job_frame.get_job_config(), data_frame.get_data_config(), output_config)
 
 
 def main():

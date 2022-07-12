@@ -50,6 +50,10 @@ class DataConfig(BaseDataclass):
     x_limits: Tuple[float, float] = (1., 10.)
     seed: Optional[int] = None
 
+    @property
+    def x_range(self) -> float:
+        return self.x_limits[1] - self.x_limits[0]
+
 
 @dataclass
 class OutputConfig(BaseDataclass):

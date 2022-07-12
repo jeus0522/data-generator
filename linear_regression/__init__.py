@@ -1,1 +1,1 @@
-from .linear_regression import generate_linear_data
+from .linear_regression import linear_data_job

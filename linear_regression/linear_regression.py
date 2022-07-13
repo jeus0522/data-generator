@@ -181,8 +181,6 @@ def main():
     parser.add_argument("--sigma", type=float, default=1.0,
                         help="The standard deviation of the normal distribution from where the "
                              "deviations are generated.")
-    parser.add_argument("--deviations_histogram", default=False, action="store_true",
-                        help="Activate to plot the deviations histogram.")
     parser.add_argument("--plot_line", default=False, action="store_true",
                         help="Activate to plot the linear function with the data points.")
     parser.add_argument("--seed", type=int, default=None,

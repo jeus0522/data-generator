@@ -10,7 +10,7 @@ distributions for the same task.
 ## Available generators
 
 ### [Linear regression](https://github.com/fiquinho/data-generator/tree/master/linear_regression)
-
+https://fiquinho-data-generator-streamlit-app-2x60yn.streamlitapp.com/Linear_Regression
 This module will create a data set of 2D data points that can be model 
 using linear regression. They will be created by randomly deviating from 
 a linear function. The linear function parameters, and the distribution 

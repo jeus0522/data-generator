@@ -8,10 +8,18 @@ from config_utils import DataConfig, LinearRegressionConfig
 from linear_regression.linear_regression import deviations_histogram, data_plot, generate_linear_data
 
 
-if 'weight' not in st.session_state:
+def random_weight():
     st.session_state['weight'] = np.random.uniform(low=-1, high=1)
-if 'bias' not in st.session_state:
+
+
+def random_bias():
     st.session_state['bias'] = np.random.uniform(low=-1, high=1)
+
+
+if 'weight' not in st.session_state:
+    random_weight()
+if 'bias' not in st.session_state:
+    random_bias()
 
 
 st.markdown("# Linear Regression")
@@ -31,7 +39,7 @@ if max_x <= min_x:
 st.markdown("## Deviations")
 st.markdown("The deviations are generated from a normal distribution with:")
 mu = st.number_input("Mean (\u03BC)", value=0., help="The mean of the distribution")
-sigma = st.number_input("Variance (\u03C3)", value=1., help="The variance of the distribution")
+sigma = st.number_input("Standard deviation (\u03C3)", value=1., help="The variance of the distribution")
 
 deviations_fig = deviations_histogram(mu, sigma)
 with st.expander("See normal distribution"):
@@ -47,17 +55,17 @@ with c1:
                            help="The bias of linear function", key="bias_input")
 
 with c2:
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
+    st.write("")
+    st.write("")
 
-    random_button = st.button("Random", key="random_button")
-if random_button:
-    st.session_state["weight"] = np.random.uniform(low=-1, high=1)
-    st.session_state["bias"] = np.random.uniform(low=-1, high=1)
+    random_weight_button = st.button("Random", key="random_weight_button", on_click=random_weight)
+    st.write("")
+    st.write("")
 
-plot_line = st.checkbox("Plot line")
+    random_bias_button = st.button("Random", key="random_bias_button", on_click=random_bias)
+
+
+plot_line = st.checkbox("Plot line", value=True)
 
 st.markdown("## Explore the data")
 data_config = DataConfig(data_size, mu, sigma, (min_x, max_x), seed=None)
@@ -69,6 +77,8 @@ st.write(data_fig)
 
 
 def download_button(object_to_download, download_filename, button_text):
+    """From: https://github.com/streamlit/example-app-csv-wrangler"""
+
     if isinstance(object_to_download, pd.DataFrame):
         object_to_download = object_to_download.to_csv(index=False)
 
